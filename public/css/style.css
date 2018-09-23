@@ -1,0 +1,91 @@
+body{
+    background-image: url("../images/background2.jpg")
+}
+
+/* #gregsHeader {
+    background-color:#000e1eE6;
+    border-radius: 15px;
+    margin-top: 100px;
+    opacity: 0.5;
+} */
+
+/* #gregsTitle, #indexTitle {
+    font-family: 'Acme', sans-serif;
+    color: #c1d4ee;
+    padding-top: 20px;
+    padding-bottom: 5px;
+    
+    font-size: 60px;
+    text-align: center;
+    opacity: 0.5;
+} */
+
+#sub {
+    text-align: center;
+    color: #c1d4ee;
+    font-style: italic;
+    padding-bottom: 20px;
+    font-size: 15px
+} 
+
+#ulog, #login {
+  padding: 100px;
+  background-color:#000e1eE6;
+  font-family: 'Acme', sans-serif;
+}
+
+.close {
+    color:#c1d4ee;    
+}
+
+.form-group {
+  padding: 5px;
+    align-self: center
+}
+
+#postHeader {
+    font-family: 'Acme', sans-serif;
+    color: #c1d4ee;
+    text-align: center;
+    padding-top: 25px;
+}
+
+#postHeader2 {
+   
+    color: #c1d4ee;
+    font-style: italic;
+  
+    font-size: 15px;
+    text-align: center;
+}
+
+#postContainer {
+    background-color:#000e1eE6;
+    border-radius: 15px;
+    margin-top: 40px;
+}
+
+#postForm {
+    font-family: 'Acme', sans-serif;
+    color: #c1d4ee;
+    margin: 0 auto;
+    width: 75%
+ 
+  
+}
+
+#submitCreate {
+    margin-bottom: 15px;
+}
+
+#email_sender {
+    width:100%
+}
+
+.input_large {
+    width: 100%
+}
+
+/* #refresh1 {
+    float: Right;
+} */
