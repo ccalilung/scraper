@@ -1,20 +1,12 @@
-const mongojs = require("mongojs");
+
 const mongoose = require("mongoose")
 const db = require("./schemas")
-// const note = require("./note.js")
-const databaseUrl = "theScraper";
-const collections = ["theScrapedData"];
-
-mongoose.connect("mongodb://localhost/theScraper")
-
-// Hook mongojs configuration to the db variable
-// var db = mongojs(databaseUrl, collections);
-// db.on("error", function(error) {
-//   console.log("Database Error:", error);
-// });
 
 
+let MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/theScraper";
 
+mongoose.Promise = Promise;
+mongoose.connect(MONGODB_URI)
 
 let entries = {
     findEntries: function (callback) {
