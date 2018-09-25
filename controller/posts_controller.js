@@ -55,7 +55,7 @@ router.get("/articles/:id", function (req, res) {
         note: data.note
       })
     } 
-    catch {
+    catch(err) {
       res.render("individual", {
         data: data,
       })
