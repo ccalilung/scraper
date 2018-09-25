@@ -18,6 +18,7 @@ var ArticleSchema = new Schema({
 
  note: [{ type: [Schema.Types.ObjectId], ref: "Note" }],
  source: {type: String},
+ comments: {type: String},
  saved: [Boolean]
 });
 

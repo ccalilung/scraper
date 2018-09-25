@@ -4,14 +4,23 @@ const router = express.Router();
 const request = require('request')
 const cheerio = require('cheerio')
 
-
+router.get("/", (req,res) => {
+res.render("homepage")
+})
 router.get("/articles", (req, res) => {
   community.entries.findEntries(data => {
-    // res.json(data)
+
     res.render("home", {
       data: data
     })
-    // console.log(data)
+  });
+});
+
+router.get("/savedarticles", (req, res) => {
+  community.entries.savedEntries(data => {
+    res.render("savedarticles", {
+      data: data
+    })
   });
 });
 
@@ -40,51 +49,55 @@ router.get("/scrape", function (req, res) {
 router.get("/articles/:id", function(req, res) {
   
   community.entries.viewOneEntry(req.params.id, function(data) {
-    res.render("individual", {
-      data: data
+    try {
+  
+  
+      res.render("individualpost", {
+        data: data,
+        note: data.note
+      })}
+      catch {
+        res.render("individual", {
+          data: data,
+        })
+      }
     })
-  })
+  
+  
     
 });
 
-router.post("/api/post_comment", (req, res) => {
-  let postingTitle = req.body.postTitle
-  let postingBody = req.body.postComment
-  let postingUser = req.body.username
-  community.entries.comment(postingUser, user => {
-    if (user) {
-      console.log(user)
-      community.postings.addNewPost(postingTitle, postingBody, postingUser, postingUrl, communityID, data => {
-        res.json(data)
+router.delete("/api/deletepost/:id", function(req,res){
+  community.entries.deletePost(req.params.id, function (data){
+
+    if(data.note[0].title !== '') {
+    res.render("individualpost", {
+      data: data,
+      note: data.note
+    })}
+    else{
+      res.render("individual", {
+        data: data,
       })
-    } else {
-      res.json("no user found")
     }
   })
 })
 
-// // If this found element had both a title and a link
-// if (title && link) {
-//   // Insert the data in the scrapedData db
-//   db.scrapedData.insert({
-//     title: title,
-//     link: link
-//   },
-//   function(err, inserted) {
-//     if (err) {
-//       // Log the error if one is encountered during the query
-//       console.log(err);
-//     }
-//     else {
-//       // Otherwise, log the inserted data
-//       console.log(inserted);
-//     }
-//   });
-// }
+
+
+    router.post("/api/post/:id", function(req, res) {
+      community.entries.createPost(req.body.title,req.body.body,req.params.id, function(data) {
+        res.json(data)
+      })
+    });
+
+    router.post("/api/save/:id", function(req, res) {
+      community.entries.savePost(req.body.saved,req.params.id, function(data) {
+        res.json(data)
+      })
+    });
+ 
 
 
 
-
-
-// Export routes for server.js to use.
 module.exports = router;

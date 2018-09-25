@@ -1,6 +1,7 @@
 const mongojs = require("mongojs");
 const mongoose = require("mongoose")
-const db = require("./article")
+const db = require("./schemas")
+// const note = require("./note.js")
 const databaseUrl = "theScraper";
 const collections = ["theScrapedData"];
 
@@ -17,59 +18,93 @@ mongoose.connect("mongodb://localhost/theScraper")
 
 let entries = {
     findEntries: function (callback) {
-        db.find({}, function (error, found) {
-            // Throw any errors to the console
+        db.Article.find({}, function (error, found) {
             if (error) {
-                
-            }
-            // If there are no errors, send the data to the browser as json
-            else {
+            } else {
                 callback(found)
-                // console.log(found)
             }
         })
     },
+    savedEntries: function (callback) {
+        db.Article.find({saved:"true"}, function (error, found) {
+            if (error) {
+            } else {
+                callback(found)
+            }
+        })
+    },savePost: (save,id, callback) => {
+        db.Article.findOneAndUpdate({
+            _id: id
+        },{"saved":save}).then(function (found) {
+            
+                callback(found)
+            }
+        )
+    },
     createEntry: (articleTitle, articleLink, articleSource) => {
-        db.create({
+        db.Article.create({
             title: articleTitle,
             link: articleLink,
             source: articleSource
         }).then((x) => {
-            // console.log(x)
+
         })
     },
+
+    
     viewOneEntry: (id, callback) => {
-        db.findOne({_id: id}, function (error, found) {
-            // Throw any errors to the console
-            if (error) {
-                
+        db.Article.findOne({
+            _id: id
+        }).populate("note").then(function (found) {
             
-            }
-            // If there are no errors, send the data to the browser as json
-            else {
                 callback(found)
-                // console.log(found)
-            }})
-           
-            // .populate("note")
-            // .then(function (dbArticle) {
-                
-            //     callback(dbArticle);
-            // })
-            // .catch(function (err) {
-            //     // If an error occurred, send it to the client
-            //     res.json(err);
-            // });
-
+            }
+        )
     },
 
-    comment: (note) => {
-        db.create({
+    createPost: (postTitle,postBody,postId, cb) => {
+        
+            db.Note.create({
+                title: postTitle,
+                body: postBody
+                
+            })
+              .then(function(dbNote) {
+                
+                return db.Article.findOneAndUpdate({ _id: postId }, { note: dbNote._id }, { new: true });
+              })
+              .then(function(dbArticle) {
+                // console.log(dbArticle)
+                cb(dbArticle);
+              })
+              .catch(function(err) {
+                // If an error occurred, send it to the client
+                // res.json(err);
+              });
+          
+    },
+    deletePost: (postId,cb) => {
+    db.Note.create({
+        title: "",
+        body: ""
+        
+    })
+      .then(function(dbNote) {
+        return db.Article.findOneAndUpdate({ _id: postId }, { note: dbNote._id }, { new: true });
+      })
+      .then(function(dbArticle) {
+        // console.log(dbArticle)
+        cb(dbArticle);
+      })
+      .catch(function(err) {
+        // If an error occurred, send it to the client
+        // res.json(err);
+      });
 
-        })
     }
 
 }
+
 
 
 
